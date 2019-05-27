@@ -7,16 +7,28 @@ import com.sca.sca_application.ScaReporters.ScaReporter;
 import com.sca.sca_application.ScaRules.ScaRule;
 import com.sca.sca_application.ScaRules.ScaRuleInspectionResult;
 import com.sca.sca_application.ScaRules.ScaRulesLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 @Component
 public class ScaRunner {
+
+    private final Map<String,ScaReporter> scaReporterMap;
+
+    private final Map<String,ScaRulesLoader> scaRulesLoaderMap;
+
+    @Autowired(required = false)
+    public ScaRunner(Map<String, ScaReporter> scaReporterMap, Map<String, ScaRulesLoader> scaRulesLoaderMap) {
+        this.scaReporterMap = scaReporterMap;
+        this.scaRulesLoaderMap = scaRulesLoaderMap;
+    }
 
     public void run(ScaConfiguration configuration){
 
@@ -30,22 +42,24 @@ public class ScaRunner {
     }
 
     private ArrayList<ScaRule> getScaRulesFromLoaders(ScaConfiguration configuration) {
-        List<ScaRulesLoader> rulesLoaderList = configuration.getRulesLoaderList();
+        List<String> rulesLoaderList = configuration.getRulesLoaderList();
         if(CollectionUtils.isEmpty(rulesLoaderList)){
             throw new RuntimeException("cannot find rules loaders");
         }
 
         ArrayList<ScaRule> scaRules = new ArrayList<>();
-        for (ScaRulesLoader scaRulesLoader : rulesLoaderList) {
+        for (String scaRulesLoaderId : rulesLoaderList) {
+            ScaRulesLoader scaRulesLoader = scaRulesLoaderMap.get(scaRulesLoaderId);
             scaRules.addAll(scaRulesLoader.getRules());
         }
         return scaRules;
     }
 
     private void submitResultsToReporters(ScaConfiguration configuration, List<ScaRuleInspectionResult> results) {
-        List<ScaReporter> reportersList = configuration.getReportersList();
+        List<String> reportersList = configuration.getReportersList();
 
-        for (ScaReporter scaReporter : reportersList) {
+        for (String scaReporterId : reportersList) {
+            ScaReporter scaReporter = scaReporterMap.get(scaReporterId);
             scaReporter.report(results);
         }
     }
