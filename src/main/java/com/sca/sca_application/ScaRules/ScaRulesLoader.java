@@ -1,4 +1,7 @@
 package com.sca.sca_application.ScaRules;
 
-public class ScaRulesLoader {
+import java.util.Collection;
+
+public interface ScaRulesLoader {
+    Collection<? extends ScaRule> getRules();
 }
