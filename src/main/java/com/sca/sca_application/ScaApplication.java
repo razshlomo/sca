@@ -1,6 +1,6 @@
 package com.sca.sca_application;
 
-import com.sca.sca_application.Configuration.ScaConfiguration;
+import com.sca.sca_application.Configuration.*;
 import com.sca.sca_application.ConfigurationLoaders.ConfigurationsLoader;
 import com.sca.sca_application.ConfigurationLoaders.internal.JsonConfigurationLoader;
 import com.sca.sca_application.ScaRunner.ScaRunner;
@@ -42,9 +42,9 @@ public class ScaApplication {
 
 		ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
 
-		scaConfigurationTmp.addRulesLoaders("basicJavaRulesLoader");
-		scaConfigurationTmp.addFileLoaders("myLoader");
-		scaConfigurationTmp.addReporters("blablabla");
+		scaConfigurationTmp.addRulesLoaders( new ScaRulesLoaderConfiguration("basicJavaRulesLoader"));
+		scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem","D:\\source\\sca\\src\\main\\resources\\filesToTest\\JavaFileToTest.java"));
+		scaConfigurationTmp.addReporters(new ScaReporterConfiguration("blablabla"));
 
 		String confStr = Boon.toJson(scaConfigurationTmp);
 
@@ -57,9 +57,9 @@ public class ScaApplication {
 		for (ConfigurationsLoader configurationsLoader: beansOfType.values()) {
 			configurationsLoader.loadConfiguration(args);
 			ScaConfiguration configuration = configurationsLoader.getScaConfiguration();
-			aggregatedConfiguration.addReporters(configuration.getReportersList().toArray(new String[0]));
-			aggregatedConfiguration.addRulesLoaders(configuration.getRulesLoaderList().toArray(new String[0]));
-			aggregatedConfiguration.addFileLoaders(configuration.getFilesLoadersList().toArray(new String[0]));
+			aggregatedConfiguration.addReporters(configuration.getReportersList().toArray(new ScaReporterConfiguration[0]));
+			aggregatedConfiguration.addRulesLoaders(configuration.getRulesLoaderList().toArray(new ScaRulesLoaderConfiguration[0]));
+			aggregatedConfiguration.addFileLoaders(configuration.getFilesLoadersList().toArray(new ScaFilesLoaderConfiguration[0]));
 		}
 		return aggregatedConfiguration;
 	}

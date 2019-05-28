@@ -1,6 +1,6 @@
 package com.sca.sca_application.ScaRunner;
 
-import com.sca.sca_application.Configuration.ScaConfiguration;
+import com.sca.sca_application.Configuration.*;
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
 import com.sca.sca_application.ScaFileLoader.ScaFilesLoader;
 import com.sca.sca_application.ScaReporters.ScaReporter;
@@ -38,7 +38,7 @@ public class ScaRunner {
 
         ArrayList<ScaRule> scaRules = getScaRulesFromLoaders(configuration);
 
-        List<String> filesLoadersList = configuration.getFilesLoadersList();
+        List<ScaFilesLoaderConfiguration> filesLoadersList = configuration.getFilesLoadersList();
 
         List<ScaRuleInspectionResult> results = getScaRuleInspectionResults(scaRules, filesLoadersList);
 
@@ -46,33 +46,40 @@ public class ScaRunner {
     }
 
     private ArrayList<ScaRule> getScaRulesFromLoaders(ScaConfiguration configuration) {
-        List<String> rulesLoaderList = configuration.getRulesLoaderList();
+        List<ScaRulesLoaderConfiguration> rulesLoaderList = configuration.getRulesLoaderList();
         if(CollectionUtils.isEmpty(rulesLoaderList)){
             throw new RuntimeException("cannot find rules loaders");
         }
 
         ArrayList<ScaRule> scaRules = new ArrayList<>();
-        for (String scaRulesLoaderId : rulesLoaderList) {
-            ScaRulesLoader scaRulesLoader = scaRulesLoaderMap.get(scaRulesLoaderId);
+        for (ScaRulesLoaderConfiguration scaRulesLoaderId : rulesLoaderList) {
+            ScaRulesLoader scaRulesLoader = scaRulesLoaderMap.get(scaRulesLoaderId.getId());
+            if(scaRulesLoader == null){
+                throw new RuntimeException("Cannot find the rule loader " + scaRulesLoaderId);
+            }
             scaRules.addAll(scaRulesLoader.getRules());
         }
         return scaRules;
     }
 
     private void submitResultsToReporters(ScaConfiguration configuration, List<ScaRuleInspectionResult> results) {
-        List<String> reportersList = configuration.getReportersList();
+        List<ScaReporterConfiguration> reportersList = configuration.getReportersList();
 
-        for (String scaReporterId : reportersList) {
-            ScaReporter scaReporter = scaReporterMap.get(scaReporterId);
+        for (ScaReporterConfiguration scaReporterConfiguration : reportersList) {
+            ScaReporter scaReporter = scaReporterMap.get(scaReporterConfiguration.getId());
             scaReporter.report(results);
         }
     }
 
-    private List<ScaRuleInspectionResult> getScaRuleInspectionResults(ArrayList<ScaRule> scaRules, List<String> filesLoadersList) {
+    private List<ScaRuleInspectionResult> getScaRuleInspectionResults(ArrayList<ScaRule> scaRules, List<ScaFilesLoaderConfiguration> filesLoadersList) {
         List<ScaRuleInspectionResult> results = new ArrayList<>();
 
-        for (String filesLoaderStr : filesLoadersList) {
-            ScaFilesLoader filesLoader = scaFilesLoaderMap.get(filesLoaderStr);
+        for (ScaFilesLoaderConfiguration filesLoaderConfiguration : filesLoadersList) {
+            ScaFilesLoader filesLoader = scaFilesLoaderMap.get(filesLoaderConfiguration.getId());
+            if (filesLoader == null){
+                throw new RuntimeException("Cannot find files loader " + filesLoaderConfiguration);
+            }
+            filesLoader.init(filesLoaderConfiguration.getParameters());
             ScaFileInformation scaFileInformation =  filesLoader.getNextFileInformation();
             while(scaFileInformation != null){
                 InputStream inputStream  = scaFileInformation.getFileInputSteam();

@@ -7,30 +7,30 @@ import java.util.Objects;
 
 public class ScaConfiguration {
 
-    private List<String> reportersList = new ArrayList<>();
-    private List<String> rulesLoadersList = new ArrayList<>();
-    private List<String> filesLoadersList = new ArrayList<>();
+    private List<ScaReporterConfiguration> reportersList = new ArrayList<>();
+    private List<ScaRulesLoaderConfiguration> rulesLoadersList = new ArrayList<>();
+    private List<ScaFilesLoaderConfiguration> filesLoadersList = new ArrayList<>();
 
-    public List<String> getFilesLoadersList() {
+    public List<ScaFilesLoaderConfiguration> getFilesLoadersList() {
         return filesLoadersList;
     }
-    public void addFileLoaders(String ...filesLoaders){
+    public void addFileLoaders(ScaFilesLoaderConfiguration ...filesLoaders){
         filesLoadersList.addAll(filesLoaders == null ? new ArrayList<>(0) : Arrays.asList(filesLoaders));
     }
 
-    public List<String> getReportersList() {
+    public List<ScaReporterConfiguration> getReportersList() {
         return reportersList;
     }
 
-    public void addReporters(String ...reporters) {
+    public void addReporters(ScaReporterConfiguration ...reporters) {
         this.reportersList.addAll(reporters == null ? new ArrayList<>(0) : Arrays.asList(reporters));
     }
 
-    public List<String> getRulesLoaderList() {
+    public List<ScaRulesLoaderConfiguration> getRulesLoaderList() {
         return rulesLoadersList;
     }
 
-    public void addRulesLoaders(String ...rules) {
+    public void addRulesLoaders(ScaRulesLoaderConfiguration ...rules) {
         this.rulesLoadersList.addAll(rules == null ? new ArrayList<>(0) : Arrays.asList(rules));
     }
 

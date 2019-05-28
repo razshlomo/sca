@@ -4,4 +4,5 @@ import java.io.InputStream;
 
 public interface ScaFileInformation {
     InputStream getFileInputSteam();
+    String getFilePath();
 }
