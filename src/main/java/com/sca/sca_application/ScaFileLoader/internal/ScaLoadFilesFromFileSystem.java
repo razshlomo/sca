@@ -2,6 +2,8 @@ package com.sca.sca_application.ScaFileLoader.internal;
 
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
 import com.sca.sca_application.ScaFileLoader.ScaFilesLoader;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -20,10 +22,11 @@ import java.util.List;
  * Load files from the machine file system by spesific given files.
  */
 @Component
+//@Scope(value="prototype", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class ScaLoadFilesFromFileSystem implements ScaFilesLoader {
 
-    private List<File> filesToInspect = new ArrayList<>();
-    private Iterator<File> iterator;
+    private List<String> filesToInspect = new ArrayList<>();
+    private Iterator<String> iterator;
 
     /**
      * Init files objects from the given parameters
@@ -37,7 +40,7 @@ public class ScaLoadFilesFromFileSystem implements ScaFilesLoader {
             if(StringUtils.isEmpty(parameter)){
                 continue;
             }
-            filesToInspect.add(new File(parameter));
+            filesToInspect.add(parameter);
         }
         iterator = null;
     }
@@ -51,20 +54,16 @@ public class ScaLoadFilesFromFileSystem implements ScaFilesLoader {
             return null;
         }
 
-        File fileToInspect = iterator.next();
+        String fileToInspect = iterator.next();
         return new ScaFileInformation() {
             @Override
             public InputStream getFileInputSteam() {
-                try {
-                    return new FileInputStream(fileToInspect);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException("Cannot read file " + fileToInspect.getAbsolutePath());
-                }
+                    return getClass().getClassLoader().getResourceAsStream(fileToInspect);
             }
 
             @Override
             public String getFilePath() {
-                return fileToInspect.getAbsolutePath();
+                return fileToInspect;
             }
         };
     }

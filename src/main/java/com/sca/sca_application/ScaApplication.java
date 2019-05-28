@@ -43,8 +43,8 @@ public class ScaApplication {
 		ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
 
 		scaConfigurationTmp.addRulesLoaders( new ScaRulesLoaderConfiguration("basicJavaRulesLoader"));
-		scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem","D:\\source\\sca\\src\\main\\resources\\filesToTest\\JavaFileToTest.java"));
-		scaConfigurationTmp.addReporters(new ScaReporterConfiguration("blablabla"));
+		scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem","filesToTest/JavaFileToTest.java"));
+		scaConfigurationTmp.addReporters(new ScaReporterConfiguration("scaThrowExceptionReporter"));
 
 		String confStr = Boon.toJson(scaConfigurationTmp);
 

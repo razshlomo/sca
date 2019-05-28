@@ -2,7 +2,6 @@ package com.sca.sca_application.ScaRules.ScaRulesResults;
 
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
 import com.sca.sca_application.ScaRules.ScaIncident;
-import com.sca.sca_application.ScaRules.ScaRuleInspectionResult;
 import com.sca.sca_application.ScaRules.ScaRuleResultState;
 import com.sca.sca_application.ScaRules.ScaRulesResults.ScaIncidents.ScaInvalidWordIncident;
 
@@ -16,10 +15,10 @@ public class ScaDefaultErrorRuleInspectionResult implements ScaRuleInspectionRes
     private String errorMessage;
     private ScaRuleResultState resultStatus;
     private List<ScaIncident> scaIncidents;
-    private ScaFileInformation scaFileInformation;
+    private ScaFileInformationResult scaFileInformation;
 
 
-    public ScaDefaultErrorRuleInspectionResult(String errorMessage, ScaRuleResultState resultStatus, ScaFileInformation scaFileInformation, ScaIncident... scaIncidents) {
+    public ScaDefaultErrorRuleInspectionResult(String errorMessage, ScaRuleResultState resultStatus, ScaFileInformationResult scaFileInformation, ScaIncident... scaIncidents) {
         this.errorMessage = errorMessage;
         this.resultStatus = resultStatus;
         this.scaIncidents = new ArrayList<>();
@@ -65,12 +64,12 @@ public class ScaDefaultErrorRuleInspectionResult implements ScaRuleInspectionRes
         scaIncidents.addAll(Arrays.asList(scaIncidentsArr));
     }
 
-    public ScaFileInformation getScaFileInformation() {
+    public ScaFileInformationResult getScaFileInformation() {
         return scaFileInformation;
     }
 
     @Override
-    public void setScaFileInformation(ScaFileInformation scaFileInformation) {
+    public void setScaFileInformation(ScaFileInformationResult scaFileInformation) {
         this.scaFileInformation = scaFileInformation;
     }
 

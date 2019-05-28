@@ -1,6 +1,6 @@
 package com.sca.sca_application.ScaReporters;
 
-import com.sca.sca_application.ScaRules.ScaRuleInspectionResult;
+import com.sca.sca_application.ScaRules.ScaRulesResults.ScaRuleInspectionResult;
 
 import java.util.List;
 

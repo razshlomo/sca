@@ -5,8 +5,11 @@ import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
 import com.sca.sca_application.ScaFileLoader.ScaFilesLoader;
 import com.sca.sca_application.ScaReporters.ScaReporter;
 import com.sca.sca_application.ScaRules.ScaRule;
-import com.sca.sca_application.ScaRules.ScaRuleInspectionResult;
+import com.sca.sca_application.ScaRules.ScaRulesResults.ScaRuleInspectionResult;
 import com.sca.sca_application.ScaRules.ScaRulesLoader;
+import org.boon.Boon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -24,7 +27,7 @@ public class ScaRunner {
 
     private final Map<String,ScaRulesLoader> scaRulesLoaderMap;
     private final Map<String, ScaFilesLoader> scaFilesLoaderMap;
-
+    private Logger logger = LoggerFactory.getLogger(ScaRunner.class);
 
 
     @Autowired(required = false)
@@ -63,6 +66,9 @@ public class ScaRunner {
     }
 
     private void submitResultsToReporters(ScaConfiguration configuration, List<ScaRuleInspectionResult> results) {
+
+        logger.info("results = {}", Boon.toJson(results));
+
         List<ScaReporterConfiguration> reportersList = configuration.getReportersList();
 
         for (ScaReporterConfiguration scaReporterConfiguration : reportersList) {
@@ -84,11 +90,12 @@ public class ScaRunner {
             while(scaFileInformation != null){
                 InputStream inputStream  = scaFileInformation.getFileInputSteam();
                 Scanner scanner = new Scanner(inputStream);
-
+                int lineNumber = 0;
                 while(scanner.hasNext()){
-                    String next = scanner.next();
+                    ++lineNumber;
+                    String next = scanner.nextLine();
                     for (ScaRule scaRule : scaRules) {
-                        ScaRuleInspectionResult scaRuleInspectionResult =  scaRule.inspectLine(scaFileInformation, next);
+                        ScaRuleInspectionResult scaRuleInspectionResult =  scaRule.inspectLine(scaFileInformation,lineNumber, next);
                         results.add(scaRuleInspectionResult);
                     }
                 }

@@ -1,6 +1,7 @@
 asdkjasd
-asd
-asd def asdasdasdas
+asd var
+asd def asdasdasdas var
 asdasdasd asdasdasd
-asd asdasdasdasdasd asdasdasd
+asd asdasdasdasdavarsd  asdasdasd
 aasdasd
+defvar
