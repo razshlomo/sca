@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ScaRuleInspectionResult {
     String getErrorMessage();
-    ScaRuleResultState resultStatus();
-    List<ScaIncidents> getScaIncidents();
+    ScaRuleResultState getResultStatus();
+    List<ScaIncident> getScaIncidents();
 }

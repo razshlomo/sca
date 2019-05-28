@@ -81,7 +81,7 @@ public class ScaRunner {
                 while(scanner.hasNext()){
                     String next = scanner.next();
                     for (ScaRule scaRule : scaRules) {
-                        ScaRuleInspectionResult scaRuleInspectionResult =  scaRule.inspectLine(next);
+                        ScaRuleInspectionResult scaRuleInspectionResult =  scaRule.inspectLine(scaFileInformation, next);
                         results.add(scaRuleInspectionResult);
                     }
                 }
