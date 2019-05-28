@@ -13,16 +13,17 @@ import java.util.Objects;
 
 public class ScaDefaultErrorRuleInspectionResult implements ScaRuleInspectionResult {
 
-    private String  errorMessage;
+    private String errorMessage;
     private ScaRuleResultState resultStatus;
     private List<ScaIncident> scaIncidents;
     private ScaFileInformation scaFileInformation;
 
 
-    public ScaDefaultErrorRuleInspectionResult(String errorMessage, ScaRuleResultState resultStatus, ScaFileInformation scaFileInformation,ScaIncident... scaIncidents) {
+    public ScaDefaultErrorRuleInspectionResult(String errorMessage, ScaRuleResultState resultStatus, ScaFileInformation scaFileInformation, ScaIncident... scaIncidents) {
         this.errorMessage = errorMessage;
         this.resultStatus = resultStatus;
-        this.scaIncidents = Arrays.asList(scaIncidents);
+        this.scaIncidents = new ArrayList<>();
+        this.scaIncidents.addAll(Arrays.asList(scaIncidents));
         this.scaFileInformation = scaFileInformation;
     }
 
@@ -54,15 +55,14 @@ public class ScaDefaultErrorRuleInspectionResult implements ScaRuleInspectionRes
     }
 
     @Override
-    public void addScaIncident(ScaInvalidWordIncident... scaDefaultIncident) {
-        if(scaDefaultIncident == null || scaDefaultIncident.length == 0){
-            scaIncidents = new ArrayList<>(0);
+    public void addScaIncident(ScaInvalidWordIncident... scaIncidentsArr) {
+        if(scaIncidentsArr == null){
+            return;
         }
-        else if (scaIncidents == null) {
-            scaIncidents = Arrays.asList(scaDefaultIncident);
-        } else {
-            scaIncidents.addAll(Arrays.asList(scaDefaultIncident));
+        if (scaIncidents == null) {
+            scaIncidents = new ArrayList<>();
         }
+        scaIncidents.addAll(Arrays.asList(scaIncidentsArr));
     }
 
     public ScaFileInformation getScaFileInformation() {
