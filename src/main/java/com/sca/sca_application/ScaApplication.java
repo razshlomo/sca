@@ -2,7 +2,9 @@ package com.sca.sca_application;
 
 import com.sca.sca_application.Configuration.ScaConfiguration;
 import com.sca.sca_application.ConfigurationLoaders.ConfigurationsLoader;
+import com.sca.sca_application.ConfigurationLoaders.internal.JsonConfigurationLoader;
 import com.sca.sca_application.ScaRunner.ScaRunner;
+import org.boon.Boon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -20,17 +22,33 @@ public class ScaApplication {
 
 	public static void main(String[] args) {
 
-		applicationContext = SpringApplication.run(ScaApplication.class, args);
+		String[] alternateArgs = getAlternateArgs();
+
+		applicationContext = SpringApplication.run(ScaApplication.class, alternateArgs);
 
 		Map<String, ConfigurationsLoader> beansOfType = applicationContext.getBeansOfType(ConfigurationsLoader.class);
 
 		logger.info("beansOfType = {}",beansOfType);
 
-		ScaConfiguration aggregatedConfiguration = getAggregatedConfiguration(args, beansOfType);
+
+		ScaConfiguration aggregatedConfiguration = getAggregatedConfiguration(alternateArgs, beansOfType);
 
 		ScaRunner scaRunner = applicationContext.getBean(ScaRunner.class);
 		scaRunner.run(aggregatedConfiguration);
 
+	}
+
+	private static String[] getAlternateArgs() {
+
+		ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
+
+		scaConfigurationTmp.addRulesLoaders("basicJavaRulesLoader");
+		scaConfigurationTmp.addFileLoaders("myLoader");
+		scaConfigurationTmp.addReporters("blablabla");
+
+		String confStr = Boon.toJson(scaConfigurationTmp);
+
+		return new String[] {JsonConfigurationLoader.expectedArg,confStr};
 	}
 
 	private static ScaConfiguration getAggregatedConfiguration(String[] args, Map<String, ConfigurationsLoader> beansOfType) {
@@ -41,6 +59,7 @@ public class ScaApplication {
 			ScaConfiguration configuration = configurationsLoader.getScaConfiguration();
 			aggregatedConfiguration.addReporters(configuration.getReportersList().toArray(new String[0]));
 			aggregatedConfiguration.addRulesLoaders(configuration.getRulesLoaderList().toArray(new String[0]));
+			aggregatedConfiguration.addFileLoaders(configuration.getFilesLoadersList().toArray(new String[0]));
 		}
 		return aggregatedConfiguration;
 	}

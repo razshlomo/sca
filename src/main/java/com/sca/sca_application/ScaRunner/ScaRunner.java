@@ -2,7 +2,7 @@ package com.sca.sca_application.ScaRunner;
 
 import com.sca.sca_application.Configuration.ScaConfiguration;
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
-import com.sca.sca_application.ScaFileLoader.FilesLoader;
+import com.sca.sca_application.ScaFileLoader.ScaFilesLoader;
 import com.sca.sca_application.ScaReporters.ScaReporter;
 import com.sca.sca_application.ScaRules.ScaRule;
 import com.sca.sca_application.ScaRules.ScaRuleInspectionResult;
@@ -23,18 +23,22 @@ public class ScaRunner {
     private final Map<String,ScaReporter> scaReporterMap;
 
     private final Map<String,ScaRulesLoader> scaRulesLoaderMap;
+    private final Map<String, ScaFilesLoader> scaFilesLoaderMap;
+
+
 
     @Autowired(required = false)
-    public ScaRunner(Map<String, ScaReporter> scaReporterMap, Map<String, ScaRulesLoader> scaRulesLoaderMap) {
+    public ScaRunner(Map<String, ScaReporter> scaReporterMap, Map<String, ScaRulesLoader> scaRulesLoaderMap,Map<String, ScaFilesLoader> scaFilesLoaderMap) {
         this.scaReporterMap = scaReporterMap;
         this.scaRulesLoaderMap = scaRulesLoaderMap;
+        this.scaFilesLoaderMap = scaFilesLoaderMap;
     }
 
     public void run(ScaConfiguration configuration){
 
         ArrayList<ScaRule> scaRules = getScaRulesFromLoaders(configuration);
 
-        List<FilesLoader> filesLoadersList = configuration.getFilesLoadersList();
+        List<String> filesLoadersList = configuration.getFilesLoadersList();
 
         List<ScaRuleInspectionResult> results = getScaRuleInspectionResults(scaRules, filesLoadersList);
 
@@ -64,10 +68,11 @@ public class ScaRunner {
         }
     }
 
-    private List<ScaRuleInspectionResult> getScaRuleInspectionResults(ArrayList<ScaRule> scaRules, List<FilesLoader> filesLoadersList) {
+    private List<ScaRuleInspectionResult> getScaRuleInspectionResults(ArrayList<ScaRule> scaRules, List<String> filesLoadersList) {
         List<ScaRuleInspectionResult> results = new ArrayList<>();
 
-        for (FilesLoader filesLoader : filesLoadersList) {
+        for (String filesLoaderStr : filesLoadersList) {
+            ScaFilesLoader filesLoader = scaFilesLoaderMap.get(filesLoaderStr);
             ScaFileInformation scaFileInformation =  filesLoader.getNextFileInformation();
             while(scaFileInformation != null){
                 InputStream inputStream  = scaFileInformation.getFileInputSteam();
@@ -76,7 +81,7 @@ public class ScaRunner {
                 while(scanner.hasNext()){
                     String next = scanner.next();
                     for (ScaRule scaRule : scaRules) {
-                        ScaRuleInspectionResult scaRuleInspectionResult =  scaRule.inpectLine(next);
+                        ScaRuleInspectionResult scaRuleInspectionResult =  scaRule.inspectLine(next);
                         results.add(scaRuleInspectionResult);
                     }
                 }

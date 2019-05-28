@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 public class JsonConfigurationLoader implements ConfigurationsLoader {
 
 
+    public static final String expectedArg = "-json";
+
     private ScaConfiguration scaConfiguration;
     private static Logger logger = LoggerFactory.getLogger(JsonConfigurationLoader.class);
 
@@ -22,19 +24,11 @@ public class JsonConfigurationLoader implements ConfigurationsLoader {
     @Override
     public void loadConfiguration(String[] args) {
 
-        ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
-
-        scaConfigurationTmp.addRulesLoaders("FileSystemFilesLoader");
-
-        String s = Boon.toJson(scaConfigurationTmp);
-        logger.info("configuration:");
-        logger.info(s);
-
         if(args == null || args.length < 2){
             throw new RuntimeException("Must have at least 2 parameters");
         }
 
-        if(!"-json".equals(args[0])){
+        if(!expectedArg.equals(args[0])){
             return;
         }
 

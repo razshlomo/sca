@@ -1,7 +1,5 @@
 package com.sca.sca_application.Configuration;
 
-import com.sca.sca_application.ScaFileLoader.FilesLoader;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,15 +9,14 @@ public class ScaConfiguration {
 
     private List<String> reportersList = new ArrayList<>();
     private List<String> rulesLoadersList = new ArrayList<>();
+    private List<String> filesLoadersList = new ArrayList<>();
 
-    public List<FilesLoader> getFilesLoadersList() {
+    public List<String> getFilesLoadersList() {
         return filesLoadersList;
     }
-    public void addFileLoaders(FilesLoader ...filesLoaders){
+    public void addFileLoaders(String ...filesLoaders){
         filesLoadersList.addAll(filesLoaders == null ? new ArrayList<>(0) : Arrays.asList(filesLoaders));
     }
-
-    private List<FilesLoader> filesLoadersList = new ArrayList<>();
 
     public List<String> getReportersList() {
         return reportersList;
