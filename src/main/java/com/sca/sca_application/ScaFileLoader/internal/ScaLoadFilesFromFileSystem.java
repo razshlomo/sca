@@ -2,15 +2,11 @@ package com.sca.sca_application.ScaFileLoader.internal;
 
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
 import com.sca.sca_application.ScaFileLoader.ScaFilesLoader;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -64,6 +60,11 @@ public class ScaLoadFilesFromFileSystem implements ScaFilesLoader {
             @Override
             public String getFilePath() {
                 return fileToInspect;
+            }
+
+            @Override
+            public String getFileExtension() {
+                return FilenameUtils.getExtension(fileToInspect);
             }
         };
     }

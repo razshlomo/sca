@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Map;
@@ -17,6 +18,9 @@ import java.util.Map;
 public class ScaApplication {
 
 	private static ConfigurableApplicationContext applicationContext;
+	public static ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
 
 	private static Logger logger = LoggerFactory.getLogger(ScaApplication.class);
 
@@ -43,7 +47,7 @@ public class ScaApplication {
 		ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
 
 		scaConfigurationTmp.addRulesLoaders( new ScaRulesLoaderConfiguration("basicJavaRulesLoader"));
-		scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem","filesToTest/JavaFileToTest.java"));
+		scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem","filesToTest/JavaFileToTest.java","filesToTest/JavaFileToTest_2.java" ,"filesToTest/JavaFileToTest_2.java1"));
 		scaConfigurationTmp.addReporters(new ScaReporterConfiguration("scaThrowExceptionReporter"));
 
 		String confStr = Boon.toJson(scaConfigurationTmp);

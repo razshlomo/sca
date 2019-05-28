@@ -1,13 +1,33 @@
 package com.sca.sca_application.ScaRules.ScaRulesResults;
 
-import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
+import java.util.Objects;
 
-public interface ScaFileInformationResult {
+public class ScaFileInformationResult {
+    private String filePath;
 
-    String getFilePath();
-
-    static ScaFileInformationResult fromScaFileInformation(ScaFileInformation scaFileInformation){
-        return scaFileInformation::getFilePath;
+    public ScaFileInformationResult(String filePath) {
+        this.filePath = filePath;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScaFileInformationResult that = (ScaFileInformationResult) o;
+        return Objects.equals(filePath, that.filePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(filePath);
+    }
 }
