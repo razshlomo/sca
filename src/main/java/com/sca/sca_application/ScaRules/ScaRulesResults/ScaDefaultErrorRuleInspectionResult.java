@@ -54,7 +54,7 @@ public class ScaDefaultErrorRuleInspectionResult implements ScaRuleInspectionRes
     }
 
     @Override
-    public void addScaIncident(ScaInvalidWordIncident... scaIncidentsArr) {
+    public void addScaIncident(ScaIncident... scaIncidentsArr) {
         if(scaIncidentsArr == null){
             return;
         }
@@ -69,7 +69,7 @@ public class ScaDefaultErrorRuleInspectionResult implements ScaRuleInspectionRes
     }
 
     @Override
-    public void setScaFileInformation(ScaFileInformationResult scaFileInformation) {
+    public void setScaFileInformationResult(ScaFileInformationResult scaFileInformation) {
         this.scaFileInformation = scaFileInformation;
     }
 

@@ -17,54 +17,55 @@ import java.util.Map;
 @SpringBootApplication
 public class ScaApplication {
 
-	private static ConfigurableApplicationContext applicationContext;
-	public static ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
+    private static ConfigurableApplicationContext applicationContext;
 
-	private static Logger logger = LoggerFactory.getLogger(ScaApplication.class);
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 
-	public static void main(String[] args) {
+    private static Logger logger = LoggerFactory.getLogger(ScaApplication.class);
 
-		String[] alternateArgs = getAlternateArgs();
+    public static void main(String[] args) {
 
-		applicationContext = SpringApplication.run(ScaApplication.class, alternateArgs);
+        String[] alternateArgs = getAlternateArgs();
 
-		Map<String, ConfigurationsLoader> beansOfType = applicationContext.getBeansOfType(ConfigurationsLoader.class);
+        applicationContext = SpringApplication.run(ScaApplication.class, alternateArgs);
 
-		logger.info("beansOfType = {}",beansOfType);
+        Map<String, ConfigurationsLoader> beansOfType = applicationContext.getBeansOfType(ConfigurationsLoader.class);
+
+        logger.info("beansOfType = {}", beansOfType);
 
 
-		ScaConfiguration aggregatedConfiguration = getAggregatedConfiguration(alternateArgs, beansOfType);
+        ScaConfiguration aggregatedConfiguration = getAggregatedConfiguration(alternateArgs, beansOfType);
 
-		ScaRunner scaRunner = applicationContext.getBean(ScaRunner.class);
-		scaRunner.run(aggregatedConfiguration);
+        ScaRunner scaRunner = applicationContext.getBean(ScaRunner.class);
+        scaRunner.run(aggregatedConfiguration);
 
-	}
+    }
 
-	private static String[] getAlternateArgs() {
+    private static String[] getAlternateArgs() {
 
-		ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
+        ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
 
-		scaConfigurationTmp.addRulesLoaders( new ScaRulesLoaderConfiguration("basicJavaRulesLoader"));
-		scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem","filesToTest/JavaFileToTest.java","filesToTest/JavaFileToTest_2.java" ,"filesToTest/JavaFileToTest_2.java1"));
-		scaConfigurationTmp.addReporters(new ScaReporterConfiguration("scaThrowExceptionReporter"));
+        scaConfigurationTmp.addRulesLoaders(new ScaRulesLoaderConfiguration("basicJavaRulesLoader"));
+        scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem", "filesToTest/CsFileToTest.cs", "filesToTest/JavaFileToTest.java", "filesToTest/JavaFileToTest_2.java", "filesToTest/JsFileToTest.js", "filesToTest/JavaFileToTest_2.java1"));
+        scaConfigurationTmp.addReporters(new ScaReporterConfiguration("scaThrowExceptionReporter"));
 
-		String confStr = Boon.toJson(scaConfigurationTmp);
+        String confStr = Boon.toJson(scaConfigurationTmp);
 
-		return new String[] {JsonConfigurationLoader.expectedArg,confStr};
-	}
+        return new String[]{JsonConfigurationLoader.expectedArg, confStr};
+    }
 
-	private static ScaConfiguration getAggregatedConfiguration(String[] args, Map<String, ConfigurationsLoader> beansOfType) {
-		ScaConfiguration aggregatedConfiguration = new ScaConfiguration();
+    private static ScaConfiguration getAggregatedConfiguration(String[] args, Map<String, ConfigurationsLoader> beansOfType) {
+        ScaConfiguration aggregatedConfiguration = new ScaConfiguration();
 
-		for (ConfigurationsLoader configurationsLoader: beansOfType.values()) {
-			configurationsLoader.loadConfiguration(args);
-			ScaConfiguration configuration = configurationsLoader.getScaConfiguration();
-			aggregatedConfiguration.addReporters(configuration.getReportersList().toArray(new ScaReporterConfiguration[0]));
-			aggregatedConfiguration.addRulesLoaders(configuration.getRulesLoaderList().toArray(new ScaRulesLoaderConfiguration[0]));
-			aggregatedConfiguration.addFileLoaders(configuration.getFilesLoadersList().toArray(new ScaFilesLoaderConfiguration[0]));
-		}
-		return aggregatedConfiguration;
-	}
+        for (ConfigurationsLoader configurationsLoader : beansOfType.values()) {
+            configurationsLoader.loadConfiguration(args);
+            ScaConfiguration configuration = configurationsLoader.getScaConfiguration();
+            aggregatedConfiguration.addReporters(configuration.getReportersList().toArray(new ScaReporterConfiguration[0]));
+            aggregatedConfiguration.addRulesLoaders(configuration.getRulesLoaderList().toArray(new ScaRulesLoaderConfiguration[0]));
+            aggregatedConfiguration.addFileLoaders(configuration.getFilesLoadersList().toArray(new ScaFilesLoaderConfiguration[0]));
+        }
+        return aggregatedConfiguration;
+    }
 }

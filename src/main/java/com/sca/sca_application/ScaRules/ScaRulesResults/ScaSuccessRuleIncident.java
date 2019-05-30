@@ -36,10 +36,10 @@ public class ScaSuccessRuleIncident implements ScaRuleInspectionResult {
     }
 
     @Override
-    public void addScaIncident(ScaInvalidWordIncident... scaDefaultIncident) {}
+    public void addScaIncident(ScaIncident... scaDefaultIncident) {}
 
     @Override
-    public void setScaFileInformation(ScaFileInformationResult scaFileInformationResult) {
+    public void setScaFileInformationResult(ScaFileInformationResult scaFileInformationResult) {
         this.scaFileInformationResult = scaFileInformationResult;
     }
 

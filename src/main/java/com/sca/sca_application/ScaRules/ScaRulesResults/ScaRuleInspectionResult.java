@@ -11,8 +11,8 @@ public interface ScaRuleInspectionResult {
     String getErrorMessage();
     ScaRuleResultState getResultStatus();
     List<ScaIncident> getScaIncidents();
-    void addScaIncident(ScaInvalidWordIncident... scaDefaultIncident);
+    void addScaIncident(ScaIncident... scaDefaultIncident);
 
-    void setScaFileInformation(ScaFileInformationResult scaFileInformation);
+    void setScaFileInformationResult(ScaFileInformationResult scaFileInformation);
     ScaFileInformationResult getScaFileInformation();
 }

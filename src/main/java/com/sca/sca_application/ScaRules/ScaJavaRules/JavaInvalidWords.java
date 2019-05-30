@@ -1,61 +1,45 @@
 package com.sca.sca_application.ScaRules.ScaJavaRules;
 
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
-import com.sca.sca_application.ScaFileLoader.ScaFileLoaderUtils;
-import com.sca.sca_application.ScaRules.ScaRule;
-import com.sca.sca_application.ScaRules.ScaRuleResultState;
+import com.sca.sca_application.ScaInspectors.internal.InvalidWordsInspector;
 import com.sca.sca_application.ScaRules.ScaRulesResults.*;
-import com.sca.sca_application.ScaRules.ScaRulesResults.ScaIncidents.ScaInvalidWordIncident;
-import org.ahocorasick.trie.Emit;
-import org.ahocorasick.trie.Trie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class JavaInvalidWords implements ScaRule {
+public class JavaInvalidWords extends ScaJavaRuleBase {
 
-    private List<String> invalidWords = Arrays.asList("def","var", "stat" );
+    @Autowired
+    private InvalidWordsInspector invalidWordsInspector;
+
+    private Set<String> invalidWords = new HashSet<>(Arrays.asList("def","var", "stat" ));
+    private Logger logger = LoggerFactory.getLogger(JavaInvalidWords.class);
 
     @Override
-    public boolean isFileRelevant(ScaFileInformation scaFileInformation) {
+    public ScaRuleInspectionResult inspectLine(ScaFileInformation scaFileInformation, int lineNumber, String lineToInspectWithComments) {
 
-        String fileExtension = scaFileInformation.getFileExtension();
-        return ScaFileLoaderUtils.JAVA.equals(fileExtension);
+        String lineToInspect = stripCommentsFromLine(lineToInspectWithComments);
+
+        logger.info("inspecting file {} line {}",scaFileInformation.getFilePath(),lineNumber);
+        logger.info("Before stripping comments:");
+        logger.info(lineToInspectWithComments);
+        logger.info("After stripping comments:");
+        logger.info(lineToInspect);
+
+        return invalidWordsInspector.inspect(scaFileInformation, lineNumber, lineToInspect,invalidWords);
     }
 
     @Override
-    public ScaRuleInspectionResult inspectLine(ScaFileInformation scaFileInformation, int lineNumber, String lineToInspect) {
-
-        ScaFileInformationResult scaFileInformationResult = ScaRulesResultUtils.fromScaFileInformation(scaFileInformation);
-
-        ScaRuleInspectionResult results = new ScaDefaultErrorRuleInspectionResult("Invalid words exist", ScaRuleResultState.FAILED,scaFileInformationResult);
-        results.setScaFileInformation(scaFileInformationResult);
-
-        Trie trie = Trie.builder().onlyWholeWords().addKeywords(invalidWords).build();
-        Collection<Emit> emits = trie.parseText(lineToInspect);
-
-        if(CollectionUtils.isEmpty(emits)){
-            ScaSuccessRuleIncident scaSuccessRuleIncident = new ScaSuccessRuleIncident();
-            scaSuccessRuleIncident.setLineNumber(lineNumber);
-            scaSuccessRuleIncident.setScaFileInformation(scaFileInformationResult);
-            return scaSuccessRuleIncident;
-        }
-
-        emits.forEach(emit -> {
-            ScaInvalidWordIncident scaDefaultIncident = new ScaInvalidWordIncident();
-            scaDefaultIncident.setInvalidWord(emit.getKeyword());
-            scaDefaultIncident.setColumnNumber(emit.getStart());
-            scaDefaultIncident.setLineNumber(lineNumber);
-            results.addScaIncident(scaDefaultIncident);
-        });
-
-        return results;
+    public Logger getLogger() {
+        return logger;
     }
+
 }
