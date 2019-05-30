@@ -7,6 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Load configuration object from JSON string.
+ */
 @Component
 public class JsonConfigurationLoader implements ConfigurationsLoader {
 
@@ -33,6 +36,10 @@ public class JsonConfigurationLoader implements ConfigurationsLoader {
         }
 
         String jsonStr = args[1];
+
+        logger.info("loading configuration from json string:");
+        logger.info(jsonStr);
+
         this.scaConfiguration = Boon.fromJson(jsonStr, ScaConfiguration.class);
     }
 }

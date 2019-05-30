@@ -33,7 +33,7 @@ public class ScaApplication {
 
         Map<String, ConfigurationsLoader> beansOfType = applicationContext.getBeansOfType(ConfigurationsLoader.class);
 
-        logger.info("beansOfType = {}", beansOfType);
+        logger.info("ConfigurationsLoader = {}", beansOfType);
 
 
         ScaConfiguration aggregatedConfiguration = getAggregatedConfiguration(alternateArgs, beansOfType);
@@ -47,12 +47,13 @@ public class ScaApplication {
 
         ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
 
-        scaConfigurationTmp.addRulesLoaders(new ScaRulesLoaderConfiguration("basicJavaRulesLoader"));
+        scaConfigurationTmp.addRulesLoaders(new ScaRulesLoaderConfiguration("basicRulesLoader"));
         scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem", "filesToTest/CsFileToTest.cs", "filesToTest/JavaFileToTest.java", "filesToTest/JavaFileToTest_2.java", "filesToTest/JsFileToTest.js", "filesToTest/JavaFileToTest_2.java1"));
         scaConfigurationTmp.addReporters(new ScaReporterConfiguration("scaThrowExceptionReporter"));
 
-        String confStr = Boon.toJson(scaConfigurationTmp);
+        String confStr = Boon.toPrettyJson(scaConfigurationTmp);
 
+        logger.info("Returning alternative args\n {}", confStr);
         return new String[]{JsonConfigurationLoader.expectedArg, confStr};
     }
 

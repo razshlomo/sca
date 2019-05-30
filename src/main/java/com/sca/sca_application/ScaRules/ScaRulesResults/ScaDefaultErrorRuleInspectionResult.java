@@ -10,6 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The default inspection result of error.
+ * Contains general thing for error inspection result.
+ */
 public class ScaDefaultErrorRuleInspectionResult implements ScaRuleInspectionResult {
 
     private String errorMessage;

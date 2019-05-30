@@ -15,10 +15,9 @@ import java.util.List;
 
 /**
  * SCA files loader.
- * Load files from the machine file system by spesific given files.
+ * Load files from the machine file system by specific given files.
  */
 @Component
-//@Scope(value="prototype", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class ScaLoadFilesFromFileSystem implements ScaFilesLoader {
 
     private List<String> filesToInspect = new ArrayList<>();

@@ -5,9 +5,12 @@ import com.sca.sca_application.ScaInspectors.ScaInspector;
 import com.sca.sca_application.ScaRules.ScaRuleResultState;
 import com.sca.sca_application.ScaRules.ScaRulesResults.*;
 import com.sca.sca_application.ScaRules.ScaRulesResults.ScaIncidents.ScaDefaultIncident;
-import com.sca.sca_application.ScaRules.ScaRulesResults.ScaIncidents.ScaInvalidWordIncident;
 import org.springframework.stereotype.Component;
 
+
+/**
+ * ScaInspector. inspect line by a given maximum length.
+ */
 @Component
 public class LineLengthInspector implements ScaInspector {
     @Override

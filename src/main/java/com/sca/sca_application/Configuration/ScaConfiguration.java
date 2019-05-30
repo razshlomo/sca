@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Describes the configuration object the application should get in order to perform the analysis.
+ */
 public class ScaConfiguration {
 
     private List<ScaReporterConfiguration> reportersList = new ArrayList<>();

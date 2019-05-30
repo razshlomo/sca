@@ -1,5 +1,8 @@
 package com.sca.sca_application.ScaRules;
 
+/**
+ * Enum of rule result state.
+ */
 public enum ScaRuleResultState {
-    PASS,WARNING,FAILED
+    PASS,FAILED
 }

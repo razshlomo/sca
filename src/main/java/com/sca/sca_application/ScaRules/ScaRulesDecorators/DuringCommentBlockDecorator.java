@@ -6,6 +6,9 @@ import com.sca.sca_application.ScaRules.ScaRulesResults.ScaRuleInspectionResult;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+/**
+ * Decorator for handling rules that inspect files that are during Comment-Block.
+ */
 @Component
 public class DuringCommentBlockDecorator implements ScaRule {
 
@@ -27,8 +30,8 @@ public class DuringCommentBlockDecorator implements ScaRule {
     }
 
     @Override
-    public void setDuringCommentBlock(boolean duringBlock) {
-         duringCommentBlock = duringBlock;
+    public void setDuringCommentBlock(boolean duringCommentBlock) {
+         this.duringCommentBlock = duringCommentBlock;
     }
 
     @Override

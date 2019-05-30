@@ -12,29 +12,32 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-
+/**
+ * Java invalid words in the code rule
+ */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class JavaInvalidWords extends ScaJavaRuleBase {
+public class JavaInvalidWordsRule extends ScaJavaRuleBase {
 
     @Autowired
     private InvalidWordsInspector invalidWordsInspector;
 
-    private Set<String> invalidWords = new HashSet<>(Arrays.asList("def","var", "stat" ));
-    private Logger logger = LoggerFactory.getLogger(JavaInvalidWords.class);
+    private Set<String> invalidWords = new HashSet<>(Arrays.asList("def", "var", "stat"));
+    private Logger logger = LoggerFactory.getLogger(JavaInvalidWordsRule.class);
 
     @Override
     public ScaRuleInspectionResult inspectLine(ScaFileInformation scaFileInformation, int lineNumber, String lineToInspectWithComments) {
 
         String lineToInspect = stripCommentsFromLine(lineToInspectWithComments);
 
-        logger.info("inspecting file {} line {}",scaFileInformation.getFilePath(),lineNumber);
-        logger.info("Before stripping comments:");
-        logger.info(lineToInspectWithComments);
-        logger.info("After stripping comments:");
-        logger.info(lineToInspect);
+        logger.info("inspecting file {} line {}", scaFileInformation.getFilePath(), lineNumber);
 
-        return invalidWordsInspector.inspect(scaFileInformation, lineNumber, lineToInspect,invalidWords);
+        logger.debug("Before stripping comments:");
+        logger.debug(lineToInspectWithComments);
+        logger.debug("After stripping comments:");
+        logger.debug(lineToInspect);
+
+        return invalidWordsInspector.inspect(scaFileInformation, lineNumber, lineToInspect, invalidWords);
     }
 
     @Override

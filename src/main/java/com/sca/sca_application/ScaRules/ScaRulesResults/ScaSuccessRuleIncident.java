@@ -2,11 +2,13 @@ package com.sca.sca_application.ScaRules.ScaRulesResults;
 
 import com.sca.sca_application.ScaRules.ScaIncident;
 import com.sca.sca_application.ScaRules.ScaRuleResultState;
-import com.sca.sca_application.ScaRules.ScaRulesResults.ScaIncidents.ScaInvalidWordIncident;
 
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Incident of success result.
+ */
 public class ScaSuccessRuleIncident implements ScaRuleInspectionResult {
 
     private int lineNumber;

@@ -2,6 +2,11 @@ package com.sca.sca_application.ScaRules.ScaRulesResults;
 
 import java.util.Objects;
 
+/**
+ * File information object to be send to the reporters.
+ * Contain visualized information about the file.
+ *
+ */
 public class ScaFileInformationResult {
     private String filePath;
 

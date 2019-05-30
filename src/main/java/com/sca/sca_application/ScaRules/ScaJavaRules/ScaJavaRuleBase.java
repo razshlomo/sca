@@ -10,8 +10,8 @@ public abstract class ScaJavaRuleBase  implements ScaRule {
     private DuringCommentBlockDecorator duringCommentBlockDecorator = new DuringCommentBlockDecorator();
 
     @Override
-    public void setDuringCommentBlock(boolean duringBlock) {
-        duringCommentBlockDecorator.setDuringCommentBlock(duringBlock);
+    public void setDuringCommentBlock(boolean duringCommentBlock) {
+        duringCommentBlockDecorator.setDuringCommentBlock(duringCommentBlock);
     }
 
     @Override

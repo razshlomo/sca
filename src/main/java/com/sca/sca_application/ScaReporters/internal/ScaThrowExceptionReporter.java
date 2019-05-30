@@ -12,6 +12,10 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * ScaReporter. Throwing an exception in case of an invalid inspection result.
+ * Used to fail builds usually.
+ */
 @Component
 public class ScaThrowExceptionReporter implements ScaReporter {
     private Logger logger = LoggerFactory.getLogger(ScaThrowExceptionReporter.class);

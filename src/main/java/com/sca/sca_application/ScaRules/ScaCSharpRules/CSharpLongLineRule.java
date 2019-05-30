@@ -13,6 +13,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/**
+ * C# files should not contain lines that are longer than 20 chars.
+ */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CSharpLongLineRule implements ScaRule {
@@ -41,8 +44,8 @@ public class CSharpLongLineRule implements ScaRule {
     }
 
     @Override
-    public void setDuringCommentBlock(boolean duringBlock) {
-        duringCommentBlockDecorator.setDuringCommentBlock(duringBlock);
+    public void setDuringCommentBlock(boolean duringCommentBlock) {
+        duringCommentBlockDecorator.setDuringCommentBlock(duringCommentBlock);
     }
 
     @Override

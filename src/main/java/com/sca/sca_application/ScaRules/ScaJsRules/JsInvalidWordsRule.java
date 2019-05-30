@@ -17,6 +17,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * JS rule for invalid words in code files.
+ */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class JsInvalidWordsRule implements ScaRule {
@@ -47,8 +50,8 @@ public class JsInvalidWordsRule implements ScaRule {
     }
 
     @Override
-    public void setDuringCommentBlock(boolean duringBlock) {
-        duringCommentBlockDecorator.setDuringCommentBlock(duringBlock);
+    public void setDuringCommentBlock(boolean duringCommentBlock) {
+        duringCommentBlockDecorator.setDuringCommentBlock(duringCommentBlock);
     }
 
     @Override

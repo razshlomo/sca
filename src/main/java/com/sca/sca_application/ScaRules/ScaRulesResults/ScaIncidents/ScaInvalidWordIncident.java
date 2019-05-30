@@ -2,6 +2,10 @@ package com.sca.sca_application.ScaRules.ScaRulesResults.ScaIncidents;
 
 import java.util.Objects;
 
+/**
+ * Sca incident for invalid results.
+ * The result described by an invalid word.
+ */
 public class ScaInvalidWordIncident extends ScaDefaultIncident {
     private String invalidWord;
 

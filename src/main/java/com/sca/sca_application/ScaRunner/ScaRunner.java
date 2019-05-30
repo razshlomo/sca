@@ -6,8 +6,8 @@ import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
 import com.sca.sca_application.ScaFileLoader.ScaFilesLoader;
 import com.sca.sca_application.ScaReporters.ScaReporter;
 import com.sca.sca_application.ScaRules.ScaRule;
+import com.sca.sca_application.ScaRules.ScaRuleLoaders.ScaRulesLoader;
 import com.sca.sca_application.ScaRules.ScaRulesResults.ScaRuleInspectionResult;
-import com.sca.sca_application.ScaRules.ScaRulesLoader;
 import org.boon.Boon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +22,19 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * Main runner of the SCA application.
+ */
 @Component
 public class ScaRunner {
 
+    /**
+     * Holds all reporters in the application
+     */
     private final Map<String,ScaReporter> scaReporterMap;
+    /**
+     * Holds all file loaders in the application
+     */
     private final Map<String, ScaFilesLoader> scaFilesLoaderMap;
     private Logger logger = LoggerFactory.getLogger(ScaRunner.class);
 
@@ -38,6 +47,7 @@ public class ScaRunner {
 
     public void run(ScaConfiguration configuration){
 
+        //Load all rules from rules loaders
         ArrayList<ScaRule> scaRules = getScaRulesFromLoaders(configuration);
 
         List<ScaFilesLoaderConfiguration> filesLoadersList = configuration.getFilesLoadersList();
@@ -47,6 +57,11 @@ public class ScaRunner {
         submitResultsToReporters(configuration, results);
     }
 
+    /**
+     * Pull out from the configuration the Rules that should be run
+     * @param configuration Application configuration object
+     * @return List of ScaRules loaded according to the configuration.
+     */
     private ArrayList<ScaRule> getScaRulesFromLoaders(ScaConfiguration configuration) {
         List<ScaRulesLoaderConfiguration> rulesLoaderList = configuration.getRulesLoaderList();
         if(CollectionUtils.isEmpty(rulesLoaderList)){
@@ -64,6 +79,11 @@ public class ScaRunner {
         return scaRules;
     }
 
+    /**
+     * Pull out reporters from the configuration object and send them the results.
+     * @param configuration Configuration object of the application
+     * @param results Inspection results from the rules.
+     */
     private void submitResultsToReporters(ScaConfiguration configuration, List<ScaRuleInspectionResult> results) {
 
         logger.info("results = {}", Boon.toJson(results));
@@ -76,6 +96,12 @@ public class ScaRunner {
         }
     }
 
+    /**
+     * Perform the inspection of the files with the given rules.
+     * @param scaRules Rules of the inspections
+     * @param filesLoadersList File loaders to get the files.
+     * @return List of inspection result object - collected from the rules.
+     */
     private List<ScaRuleInspectionResult> getScaRuleInspectionResults(List<ScaRule> scaRules, List<ScaFilesLoaderConfiguration> filesLoadersList) {
         List<ScaRuleInspectionResult> results = new ArrayList<>();
 

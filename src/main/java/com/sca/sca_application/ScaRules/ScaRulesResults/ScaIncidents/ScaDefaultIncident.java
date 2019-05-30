@@ -4,6 +4,9 @@ import com.sca.sca_application.ScaRules.ScaIncident;
 
 import java.util.Objects;
 
+/**
+ * The base object of incidents. Can be used generally.
+ */
 public class ScaDefaultIncident implements ScaIncident {
     private int lineNumber;
 
