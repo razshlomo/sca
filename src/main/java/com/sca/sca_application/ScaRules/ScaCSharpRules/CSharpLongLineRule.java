@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * C# files should not contain lines that are longer than 20 chars.
  */
-@Component
+@Component("cSharpLongLineRule")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CSharpLongLineRule implements ScaRule {
 

@@ -11,30 +11,25 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Basic rules loader. Currently returns list of the basic rules but can returns rules from dynamic loaded JARs or Groovy scripts.
  */
 @Component
-public class BasicRulesLoader implements ScaRulesLoader {
+public class ApplicationContextRulesLoader implements ScaRulesLoader {
 
     @Override
-    public Collection<? extends ScaRule> getRules(List<String> params) {
-        return beansByClass(JavaInvalidWordsRule.class, JsInvalidWordsRule.class, CSharpLongLineRule.class);
-    }
+    public Collection<? extends ScaRule> getRules(Collection<String> params) {
 
-    @SafeVarargs
-    private final <T> Collection<T> beansByClass(Class<? extends T>... clazz) {
-
-        Collection<T> result = new ArrayList<>(clazz.length);
-        ApplicationContext applicationContext = ScaApplication.getApplicationContext();
-
-        for (Class<? extends T> aClass : clazz) {
-            result.add(applicationContext.getBean(aClass));
+        if (params == null || params.size() == 0) {
+            return new ArrayList<>(0);
         }
-
-        return result;
+        ApplicationContext applicationContext = ScaApplication.getApplicationContext();
+        ArrayList<ScaRule> scaRules = new ArrayList<>(params.size());
+        for (String param : params) {
+            ScaRule bean = applicationContext.getBean(param, ScaRule.class);
+            scaRules.add(bean);
+        }
+        return scaRules;
     }
-
 }

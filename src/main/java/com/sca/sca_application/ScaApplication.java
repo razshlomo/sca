@@ -46,8 +46,7 @@ public class ScaApplication {
     private static String[] getAlternateArgs() {
 
         ScaConfiguration scaConfigurationTmp = new ScaConfiguration();
-
-        scaConfigurationTmp.addRulesLoaders(new ScaRulesLoaderConfiguration("basicRulesLoader"));
+        scaConfigurationTmp.addRulesLoaders(new ScaRulesLoaderConfiguration("applicationContextRulesLoader","javaInvalidWordsRule","jsInvalidWordsRule","cSharpLongLineRule"));
         scaConfigurationTmp.addFileLoaders(new ScaFilesLoaderConfiguration("scaLoadFilesFromFileSystem", "filesToTest/CsFileToTest.cs", "filesToTest/JavaFileToTest.java", "filesToTest/JavaFileToTest_2.java", "filesToTest/JsFileToTest.js", "filesToTest/JavaFileToTest_2.java1"));
         scaConfigurationTmp.addReporters(new ScaReporterConfiguration("scaThrowExceptionReporter"));
 

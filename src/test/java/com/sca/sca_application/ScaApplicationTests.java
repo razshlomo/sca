@@ -46,7 +46,7 @@ public class ScaApplicationTests {
 	public void testJsonConfigurationLoader() throws JSONException {
 		JsonConfigurationLoader jsonConfigurationLoader = context.getBean(JsonConfigurationLoader.class);
 		String confJsonStr =
-				"{\"filesLoadersList\":[{\"id\":\"scaLoadFilesFromFileSystem\",\"parameters\":[\"filesToTest/CsFileToTest.cs\",\"filesToTest/JavaFileToTest.java\",\"filesToTest/JavaFileToTest_2.java\",\"filesToTest/JsFileToTest.js\",\"filesToTest/JavaFileToTest_2.java1\"]}],\"rulesLoadersList\":[{\"id\":\"basicRulesLoader\",\"parameters\":[\"one\"]}],\"reportersList\":[{\"id\":\"scaThrowExceptionReporter\",\"parameters\":[\"one\"]}]}";
+				"{\"filesLoadersList\":[{\"id\":\"scaLoadFilesFromFileSystem\",\"parameters\":[\"filesToTest/CsFileToTest.cs\",\"filesToTest/JavaFileToTest.java\",\"filesToTest/JavaFileToTest_2.java\",\"filesToTest/JsFileToTest.js\",\"filesToTest/JavaFileToTest_2.java1\"]}],\"rulesLoadersList\":[{\"id\":\"applicationContextRulesLoader\",\"parameters\":[\"one\"]}],\"reportersList\":[{\"id\":\"scaThrowExceptionReporter\",\"parameters\":[\"one\"]}]}";
 		jsonConfigurationLoader.loadConfiguration(new String[]{JsonConfigurationLoader.expectedArg,confJsonStr});
 
 

@@ -1,7 +1,7 @@
 package com.sca.sca_application;
 
 import com.sca.sca_application.ScaRules.ScaRule;
-import com.sca.sca_application.ScaRules.ScaRuleLoaders.internal.BasicRulesLoader;
+import com.sca.sca_application.ScaRules.ScaRuleLoaders.internal.ApplicationContextRulesLoader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class ScaRulesLoaderTests {
     @Autowired
     private ApplicationContext context;
     @Autowired
-    private BasicRulesLoader basicRulesLoader;
+    private ApplicationContextRulesLoader basicRulesLoader;
 
     @Test
     public void VerifyAllRulesExistsTest(){
