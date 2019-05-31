@@ -63,18 +63,18 @@ public class ScaRunner {
      * @return List of ScaRules loaded according to the configuration.
      */
     private ArrayList<ScaRule> getScaRulesFromLoaders(ScaConfiguration configuration) {
-        List<ScaRulesLoaderConfiguration> rulesLoaderList = configuration.getRulesLoaderList();
+        List<ScaRulesLoaderConfiguration> rulesLoaderList = configuration.getRulesLoadersList();
         if(CollectionUtils.isEmpty(rulesLoaderList)){
             throw new RuntimeException("cannot find rules loaders");
         }
 
         ArrayList<ScaRule> scaRules = new ArrayList<>();
-        for (ScaRulesLoaderConfiguration scaRulesLoaderId : rulesLoaderList) {
-            ScaRulesLoader scaRulesLoader = ScaApplication.getApplicationContext().getBean(scaRulesLoaderId.getId(),ScaRulesLoader.class);
+        for (ScaRulesLoaderConfiguration scaRulesLoaderConf : rulesLoaderList) {
+            ScaRulesLoader scaRulesLoader = ScaApplication.getApplicationContext().getBean(scaRulesLoaderConf.getId(),ScaRulesLoader.class);
             if(scaRulesLoader == null){
-                throw new RuntimeException("Cannot find the rule loader " + scaRulesLoaderId);
+                throw new RuntimeException("Cannot find the rule loader " + scaRulesLoaderConf);
             }
-            scaRules.addAll(scaRulesLoader.getRules());
+            scaRules.addAll(scaRulesLoader.getRules(scaRulesLoaderConf.getParameters()));
         }
         return scaRules;
     }

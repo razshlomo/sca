@@ -1,7 +1,7 @@
 package com.sca.sca_application.ScaRules.ScaJsRules;
 
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
-import com.sca.sca_application.ScaFileLoader.ScaFileLoaderUtils;
+import com.sca.sca_application.ScaFileLoader.ScaFileLoaderConstants;
 import com.sca.sca_application.ScaInspectors.internal.InvalidWordsInspector;
 import com.sca.sca_application.ScaRules.ScaRule;
 import com.sca.sca_application.ScaRules.ScaRulesDecorators.DuringCommentBlockDecorator;
@@ -35,7 +35,7 @@ public class JsInvalidWordsRule implements ScaRule {
     @Override
     public boolean isFileRelevant(ScaFileInformation scaFileInformation) {
         String fileExtension = scaFileInformation.getFileExtension();
-        return ScaFileLoaderUtils.JS.equals(fileExtension);
+        return ScaFileLoaderConstants.JS.equals(fileExtension);
     }
 
     @Override

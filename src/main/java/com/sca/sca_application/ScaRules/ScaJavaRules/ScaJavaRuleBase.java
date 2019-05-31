@@ -1,7 +1,7 @@
 package com.sca.sca_application.ScaRules.ScaJavaRules;
 
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
-import com.sca.sca_application.ScaFileLoader.ScaFileLoaderUtils;
+import com.sca.sca_application.ScaFileLoader.ScaFileLoaderConstants;
 import com.sca.sca_application.ScaRules.ScaRule;
 import com.sca.sca_application.ScaRules.ScaRulesDecorators.DuringCommentBlockDecorator;
 
@@ -22,7 +22,7 @@ public abstract class ScaJavaRuleBase  implements ScaRule {
     @Override
     public boolean isFileRelevant(ScaFileInformation scaFileInformation) {
         String fileExtension = scaFileInformation.getFileExtension();
-        return ScaFileLoaderUtils.JAVA.equals(fileExtension);
+        return ScaFileLoaderConstants.JAVA.equals(fileExtension);
     }
 
 }

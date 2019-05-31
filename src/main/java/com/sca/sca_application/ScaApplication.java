@@ -64,7 +64,7 @@ public class ScaApplication {
             configurationsLoader.loadConfiguration(args);
             ScaConfiguration configuration = configurationsLoader.getScaConfiguration();
             aggregatedConfiguration.addReporters(configuration.getReportersList().toArray(new ScaReporterConfiguration[0]));
-            aggregatedConfiguration.addRulesLoaders(configuration.getRulesLoaderList().toArray(new ScaRulesLoaderConfiguration[0]));
+            aggregatedConfiguration.addRulesLoaders(configuration.getRulesLoadersList().toArray(new ScaRulesLoaderConfiguration[0]));
             aggregatedConfiguration.addFileLoaders(configuration.getFilesLoadersList().toArray(new ScaFilesLoaderConfiguration[0]));
         }
         return aggregatedConfiguration;

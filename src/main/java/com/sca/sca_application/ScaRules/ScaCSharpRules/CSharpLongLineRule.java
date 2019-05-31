@@ -1,7 +1,7 @@
 package com.sca.sca_application.ScaRules.ScaCSharpRules;
 
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
-import com.sca.sca_application.ScaFileLoader.ScaFileLoaderUtils;
+import com.sca.sca_application.ScaFileLoader.ScaFileLoaderConstants;
 import com.sca.sca_application.ScaInspectors.internal.LineLengthInspector;
 import com.sca.sca_application.ScaRules.ScaRule;
 import com.sca.sca_application.ScaRules.ScaRulesDecorators.DuringCommentBlockDecorator;
@@ -30,7 +30,7 @@ public class CSharpLongLineRule implements ScaRule {
     @Override
     public boolean isFileRelevant(ScaFileInformation scaFileInformation) {
         String fileExtension = scaFileInformation.getFileExtension();
-        return ScaFileLoaderUtils.C_SHARP.equals(fileExtension);
+        return ScaFileLoaderConstants.C_SHARP.equals(fileExtension);
     }
 
     @Override

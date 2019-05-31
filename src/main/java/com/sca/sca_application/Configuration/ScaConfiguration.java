@@ -29,7 +29,7 @@ public class ScaConfiguration {
         this.reportersList.addAll(reporters == null ? new ArrayList<>(0) : Arrays.asList(reporters));
     }
 
-    public List<ScaRulesLoaderConfiguration> getRulesLoaderList() {
+    public List<ScaRulesLoaderConfiguration> getRulesLoadersList() {
         return rulesLoadersList;
     }
 

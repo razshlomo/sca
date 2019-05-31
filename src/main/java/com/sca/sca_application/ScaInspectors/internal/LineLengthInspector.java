@@ -24,7 +24,7 @@ public class LineLengthInspector implements ScaInspector {
         ScaFileInformationResult scaFileInformationResult = ScaRulesResultUtils.fromScaFileInformation(scaFileInformation);
 
 
-        if(lineToInspect != null && lineToInspect.length() > maximumValidLength){
+        if(lineToInspect != null && lineToInspect.trim().length() > maximumValidLength){
             ScaDefaultIncident scaDefaultIncident = new ScaDefaultIncident();
             scaDefaultIncident.setLineNumber(lineNumber);
 

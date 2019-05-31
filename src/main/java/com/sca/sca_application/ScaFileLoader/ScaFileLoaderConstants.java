@@ -1,6 +1,6 @@
 package com.sca.sca_application.ScaFileLoader;
 
-public class ScaFileLoaderUtils {
+public class ScaFileLoaderConstants {
 
     //common files extensions
     public static final String JAVA = "java";
