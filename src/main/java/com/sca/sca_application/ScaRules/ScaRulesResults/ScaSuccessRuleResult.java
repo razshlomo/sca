@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Incident of success result.
  */
-public class ScaSuccessRuleIncident implements ScaRuleInspectionResult {
+public class ScaSuccessRuleResult implements ScaRuleInspectionResult {
 
     private int lineNumber;
     private ScaFileInformationResult scaFileInformationResult;
@@ -55,7 +55,7 @@ public class ScaSuccessRuleIncident implements ScaRuleInspectionResult {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ScaSuccessRuleIncident that = (ScaSuccessRuleIncident) o;
+        ScaSuccessRuleResult that = (ScaSuccessRuleResult) o;
         return lineNumber == that.lineNumber;
     }
 

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Component
 public class ScaThrowExceptionReporter implements ScaReporter {
     private Logger logger = LoggerFactory.getLogger(ScaThrowExceptionReporter.class);
+    public static final String throwExceptionMessage = "Errors found in the results";
 
     @Override
     public void report(List<ScaRuleInspectionResult> results) {
@@ -33,6 +34,8 @@ public class ScaThrowExceptionReporter implements ScaReporter {
         }
 
 
-        throw new RuntimeException("Errors found in the inspected files: " + System.lineSeparator() + Boon.toPrettyJson(errors));
+        logger.error("Errors found in the inspected files:" + System.lineSeparator() + Boon.toPrettyJson(errors));
+
+        throw new RuntimeException(throwExceptionMessage);
     }
 }

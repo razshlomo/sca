@@ -38,7 +38,7 @@ public class InvalidWordsInspector implements ScaInspector {
         Collection<Emit> emits = trie.parseText(lineToInspect);
 
         if(CollectionUtils.isEmpty(emits)){
-            ScaSuccessRuleIncident scaSuccessRuleIncident = new ScaSuccessRuleIncident();
+            ScaSuccessRuleResult scaSuccessRuleIncident = new ScaSuccessRuleResult();
             scaSuccessRuleIncident.setLineNumber(lineNumber);
             scaSuccessRuleIncident.setScaFileInformationResult(scaFileInformationResult);
             return scaSuccessRuleIncident;

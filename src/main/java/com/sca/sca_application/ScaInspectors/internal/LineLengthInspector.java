@@ -35,7 +35,7 @@ public class LineLengthInspector implements ScaInspector {
             return result;
         }
 
-        ScaSuccessRuleIncident scaSuccessRuleIncident = new ScaSuccessRuleIncident();
+        ScaSuccessRuleResult scaSuccessRuleIncident = new ScaSuccessRuleResult();
         scaSuccessRuleIncident.setLineNumber(lineNumber);
         scaSuccessRuleIncident.setScaFileInformationResult(scaFileInformationResult);
         return scaSuccessRuleIncident;
