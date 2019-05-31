@@ -1,7 +1,9 @@
 package com.sca.sca_application.ScaRunner;
 
-import com.sca.sca_application.Configuration.*;
-import com.sca.sca_application.ScaApplication;
+import com.sca.sca_application.Configuration.ScaConfiguration;
+import com.sca.sca_application.Configuration.ScaFilesLoaderConfiguration;
+import com.sca.sca_application.Configuration.ScaReporterConfiguration;
+import com.sca.sca_application.Configuration.ScaRulesLoaderConfiguration;
 import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
 import com.sca.sca_application.ScaFileLoader.ScaFilesLoader;
 import com.sca.sca_application.ScaReporters.ScaReporter;
@@ -12,6 +14,7 @@ import org.boon.Boon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -28,6 +31,8 @@ import java.util.stream.Collectors;
 @Component
 public class ScaRunner {
 
+    private final ApplicationContext context;
+
     /**
      * Holds all reporters in the application
      */
@@ -36,13 +41,15 @@ public class ScaRunner {
      * Holds all file loaders in the application
      */
     private final Map<String, ScaFilesLoader> scaFilesLoaderMap;
+
     private Logger logger = LoggerFactory.getLogger(ScaRunner.class);
 
 
     @Autowired
-    public ScaRunner(Map<String, ScaReporter> scaReporterMap,Map<String, ScaFilesLoader> scaFilesLoaderMap) {
+    public ScaRunner(ApplicationContext applicationContext, Map<String, ScaReporter> scaReporterMap, Map<String, ScaFilesLoader> scaFilesLoaderMap) {
         this.scaReporterMap = scaReporterMap;
         this.scaFilesLoaderMap = scaFilesLoaderMap;
+        this.context = applicationContext;
     }
 
     public void run(ScaConfiguration configuration){
@@ -70,7 +77,7 @@ public class ScaRunner {
 
         ArrayList<ScaRule> scaRules = new ArrayList<>();
         for (ScaRulesLoaderConfiguration scaRulesLoaderConf : rulesLoaderList) {
-            ScaRulesLoader scaRulesLoader = ScaApplication.getApplicationContext().getBean(scaRulesLoaderConf.getId(),ScaRulesLoader.class);
+            ScaRulesLoader scaRulesLoader = context.getBean(scaRulesLoaderConf.getId(),ScaRulesLoader.class);
             if(scaRulesLoader == null){
                 throw new RuntimeException("Cannot find the rule loader " + scaRulesLoaderConf);
             }

@@ -1,11 +1,8 @@
 package com.sca.sca_application.ScaRules.ScaRuleLoaders.internal;
 
-import com.sca.sca_application.ScaApplication;
-import com.sca.sca_application.ScaRules.ScaCSharpRules.CSharpLongLineRule;
-import com.sca.sca_application.ScaRules.ScaJavaRules.JavaInvalidWordsRule;
-import com.sca.sca_application.ScaRules.ScaJsRules.JsInvalidWordsRule;
 import com.sca.sca_application.ScaRules.ScaRule;
 import com.sca.sca_application.ScaRules.ScaRuleLoaders.ScaRulesLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -18,16 +15,19 @@ import java.util.Collection;
 @Component
 public class ApplicationContextRulesLoader implements ScaRulesLoader {
 
+    @Autowired
+    private ApplicationContext context;
+
     @Override
     public Collection<? extends ScaRule> getRules(Collection<String> params) {
 
         if (params == null || params.size() == 0) {
             return new ArrayList<>(0);
         }
-        ApplicationContext applicationContext = ScaApplication.getApplicationContext();
+
         ArrayList<ScaRule> scaRules = new ArrayList<>(params.size());
         for (String param : params) {
-            ScaRule bean = applicationContext.getBean(param, ScaRule.class);
+            ScaRule bean = context.getBean(param, ScaRule.class);
             scaRules.add(bean);
         }
         return scaRules;

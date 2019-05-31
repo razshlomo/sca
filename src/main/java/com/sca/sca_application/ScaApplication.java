@@ -17,9 +17,9 @@ import java.util.Map;
 @SpringBootApplication
 public class ScaApplication {
 
-    private static ConfigurableApplicationContext applicationContext;
+    private static ApplicationContext applicationContext;
 
-    public static ApplicationContext getApplicationContext() {
+    public ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
