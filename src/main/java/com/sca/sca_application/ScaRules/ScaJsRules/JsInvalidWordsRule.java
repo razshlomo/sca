@@ -19,6 +19,7 @@ import java.util.Set;
 
 /**
  * JS rule for invalid words in code files.
+ * Get matches also in string values (inside " ")
  */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

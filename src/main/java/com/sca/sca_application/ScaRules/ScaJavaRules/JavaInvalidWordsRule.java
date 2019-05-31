@@ -14,6 +14,7 @@ import java.util.*;
 
 /**
  * Java invalid words in the code rule
+ * Get matches also in string values (inside " ")
  */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
