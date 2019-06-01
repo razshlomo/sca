@@ -98,7 +98,9 @@ public class ScaRunner {
         List<ScaReporterConfiguration> reportersList = configuration.getReportersList();
 
         for (ScaReporterConfiguration scaReporterConfiguration : reportersList) {
-            ScaReporter scaReporter = scaReporterMap.get(scaReporterConfiguration.getId());
+            String reporterId = scaReporterConfiguration.getId();
+            logger.debug("Reporting to {}",reporterId);
+            ScaReporter scaReporter = scaReporterMap.get(reporterId);
             scaReporter.report(results);
         }
     }
@@ -118,25 +120,36 @@ public class ScaRunner {
                 throw new RuntimeException("Cannot find files loader " + filesLoaderConfiguration);
             }
             filesLoader.init(filesLoaderConfiguration.getParameters());
-            ScaFileInformation scaFileInformation =  filesLoader.getNextFileInformation();
-            while(scaFileInformation != null){
-                ScaFileInformation finalScaFileInformation = scaFileInformation;
-                List<ScaRule> relevantRules = scaRules.stream().filter(scaRule -> scaRule.isFileRelevant(finalScaFileInformation)).collect(Collectors.toList());
-                InputStream inputStream  = scaFileInformation.getFileInputSteam();
-                Scanner scanner = new Scanner(inputStream);
-                int lineNumber = 0;
-                while(scanner.hasNext()){
-                    ++lineNumber;
-                    String next = scanner.nextLine();
-                    for (ScaRule scaRule : relevantRules) {
-                        ScaRuleInspectionResult scaRuleInspectionResult =  scaRule.inspectLine(scaFileInformation,lineNumber, next);
-                        results.add(scaRuleInspectionResult);
-                    }
-                }
 
-                scaFileInformation = filesLoader.getNextFileInformation();
+            for (ScaFileInformation scaFileInformation : filesLoader) {
+
+                //Get only relevant rules from whole rules list
+                List<ScaRule> relevantRules = scaRules.stream().filter(scaRule -> scaRule.isFileRelevant(scaFileInformation)).collect(Collectors.toList());
+                List<ScaRuleInspectionResult> scaRuleInspectionResults = scanFile(scaFileInformation, relevantRules);
+                if(!CollectionUtils.isEmpty(scaRuleInspectionResults)){
+                    logger.debug("Adding {} results for file {}",scaRuleInspectionResults.size(),scaFileInformation.getFilePath());
+                    results.addAll(scaRuleInspectionResults);
+                }
             }
         }
+        return results;
+    }
+
+    private List<ScaRuleInspectionResult> scanFile(ScaFileInformation scaFileInformation, List<ScaRule> relevantRules) {
+        List<ScaRuleInspectionResult> results = new ArrayList<>();
+
+        InputStream inputStream  = scaFileInformation.getFileInputSteam();
+        Scanner scanner = new Scanner(inputStream);
+        int lineNumber = 0;
+        while(scanner.hasNext()){
+            ++lineNumber;
+            String next = scanner.nextLine();
+            for (ScaRule scaRule : relevantRules) {
+                ScaRuleInspectionResult scaRuleInspectionResult =  scaRule.inspectLine(scaFileInformation,lineNumber, next);
+                results.add(scaRuleInspectionResult);
+            }
+        }
+
         return results;
     }
 }

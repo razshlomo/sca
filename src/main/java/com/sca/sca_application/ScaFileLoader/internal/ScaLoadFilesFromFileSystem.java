@@ -37,14 +37,20 @@ public class ScaLoadFilesFromFileSystem implements ScaFilesLoader {
             }
             filesToInspect.add(parameter);
         }
-        iterator = null;
+        iterator = filesToInspect.iterator();
+    }
+
+    @Override
+    public boolean hasNextFile() {
+        if(iterator == null){
+            throw new RuntimeException("File loader wasn't initialized");
+        }
+        return iterator.hasNext();
     }
 
     @Override
     public ScaFileInformation getNextFileInformation() {
-        if(iterator == null){
-            iterator = filesToInspect.iterator();
-        }
+
         if(!iterator.hasNext()){
             return null;
         }
@@ -67,5 +73,4 @@ public class ScaLoadFilesFromFileSystem implements ScaFilesLoader {
             }
         };
     }
-
 }

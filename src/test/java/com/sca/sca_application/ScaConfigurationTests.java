@@ -3,10 +3,6 @@ package com.sca.sca_application;
 import com.sca.sca_application.Configuration.ScaConfiguration;
 import com.sca.sca_application.Configuration.ScaFilesLoaderConfiguration;
 import com.sca.sca_application.ConfigurationLoaders.internal.JsonConfigurationLoader;
-import com.sca.sca_application.ScaFileInformation.ScaFileInformation;
-import com.sca.sca_application.ScaFileLoader.internal.ScaLoadFilesFromFileSystem;
-import com.sca.sca_application.ScaInspectors.internal.InvalidWordsInspector;
-import org.apache.commons.io.FilenameUtils;
 import org.boon.Boon;
 import org.json.JSONException;
 import org.junit.Assert;
@@ -18,13 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
-import java.util.List;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ScaApplicationTests {
+public class ScaConfigurationTests {
 
 	@Autowired
 	ApplicationContext context;
@@ -55,37 +48,5 @@ public class ScaApplicationTests {
 
 
 		JSONAssert.assertEquals(confJsonStr,confJsonStrAfterLoading,true);
-	}
-
-
-	@Test
-	public void testScaLoadFilesFromFileSystem(){
-
-		ScaLoadFilesFromFileSystem scaLoadFilesFromFileSystem = context.getBean(ScaLoadFilesFromFileSystem.class);
-
-		List<String> filesPathsToLoad = Arrays.asList(
-				"filesToTest/CsFileToTest.cs",
-				"filesToTest/JavaFileToTest.java",
-				"filesToTest/JavaFileToTest_2.java",
-				"filesToTest/JsFileToTest.js",
-				"filesToTest/JavaFileToTest_2.java1"
-		);
-		scaLoadFilesFromFileSystem.init(filesPathsToLoad);
-
-
-		ScaFileInformation nextFileInformation = scaLoadFilesFromFileSystem.getNextFileInformation();
-		while (nextFileInformation !=null){
-
-			String filePath = nextFileInformation.getFilePath();
-			Assert.assertTrue(filesPathsToLoad.contains(filePath));
-
-			String extension = FilenameUtils.getExtension(filePath);
-			Assert.assertEquals(extension,nextFileInformation.getFileExtension());
-
-			Assert.assertNotNull(nextFileInformation.getFileInputSteam());
-
-			nextFileInformation = scaLoadFilesFromFileSystem.getNextFileInformation();
-		}
-
 	}
 }
